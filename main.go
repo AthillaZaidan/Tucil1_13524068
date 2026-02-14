@@ -1,18 +1,12 @@
 package main
 
-import "Tucil1/utils"
-
 import (
+	"Tucil1/packages/utils"
+  "core/main/packages"
 	"fmt"
 	"log"
 	"os"
 )
-
-
-
-func searchSmallestRegion (grid [][]byte) byte{
-	
-}
 
 func main() {
 	var namaFile string
@@ -72,5 +66,4 @@ func main() {
 	fmt.Printf("Ukuran grid: %d x %d\n", len(grid), col)
 	
 	gridDup := grid
-
 }

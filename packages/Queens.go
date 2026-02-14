@@ -1,41 +1,33 @@
 package utils
 
-func MarkQueens(grid [][]byte, rowPos, colPos int, row, col int) {
-	grid[rowPos][colPos] = '#' // ini sebagai queen
+func isValid(grid [][]byte, queensPlacement[]int, row, col int) bool {
+	for i := 0; i < len(queensPlacement); i++ {
+		for j := i+1 ; j < len(queensPlacement); j++ {
+			pos1 := queensPlacement[i]
+			pos2 := queensPlacement[j]
 
-	for i := 0; i < row; i++ {
-		if i != rowPos {
-			grid[i][colPos] = '.' // ini biar gaada queen nabrak
-		} else {
-			continue
-		}
-	}
+			row1 := pos1 / col
+			col1 := pos1 % col
 
-	for i := 0; i < col; i++ {
-		if i != colPos {
-			grid[rowPos][i] = '.' // ini sama dengan atas
-		}
-	}
+			row2 := pos2 / col
+			col2 := pos2 % col
 
-	for i := -1; i <= 1; i++ {
-		for j := -1; j <= 1; j++ {
-			newRow := rowPos + i
-			newCol := colPos + j
+			if row1 == row2 {
+				return false
+			}
 
-			// Cek apakah posisi valid dan bukan posisi queen
-			if newRow >= 0 && newRow < row && newCol >= 0 && newCol < col {
-				if !(i == 0 && j == 0) { // jangan overwrite queen
-					grid[newRow][newCol] = '.'
-				}
+			if col1 == col2 {
+				return false
+			}
+
+			if row1/3 == row2/3 && col1/3 == col2/3 {
+				return false
+			}
+
+			if grid[row1][col1] == grid[row2][col2] {
+				return  false
 			}
 		}
 	}
-}
-
-func isSafe(grid [][]byte, rowPos, colPos int) bool {
-	if grid[rowPos][colPos] == '.'{
-		return false
-	} else {
-		return true
-	}
+	return  true
 }
