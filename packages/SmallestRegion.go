@@ -55,3 +55,4 @@ func countRegion(arr [][]byte, row, col int) int{
 	}
 	return regionNum
 }
+
