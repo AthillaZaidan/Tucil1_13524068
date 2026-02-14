@@ -4,9 +4,19 @@ import (
 	"fmt"
 )
 
+var iteration int
+
 func GenerateCombinations(grid [][]byte, row, col int, numQueens int, maxQueens int, queensPlacement []int, pos int) {
 
 	if numQueens == maxQueens {
+
+		iteration++
+
+		if iteration % 100 == 0 {
+			fmt.Printf("Iterasi ke-%d: Checking kombinasi %v\n", iteration, queensPlacement)
+			PrintGrid(grid, queensPlacement, row, col)
+		}
+		
 		if isValid(grid, queensPlacement, row, col) {
 			fmt.Println("SOLUSI DIDAPATKAN")
 			PrintGrid(grid, queensPlacement, row, col)
@@ -32,6 +42,8 @@ func Bruteforce_solve(grid [][]byte, row, col int) {
 
 	queensPlacement := make([]int, 0, maxQueens)
 	GenerateCombinations(grid, row, col, 0, maxQueens, queensPlacement, 0)
+
+	fmt.Printf("\nTotal iterasi: %d\n", iteration)
 }
 
 func PrintGrid(grid	[][]byte, queensPlacement[]int, row, col int){
