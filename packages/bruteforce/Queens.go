@@ -1,4 +1,4 @@
-package utils
+package bruteforce
 
 func isValid(grid [][]byte, queensPlacement []int, row, col int) bool {
 	for i := 0; i < len(queensPlacement); i++ {

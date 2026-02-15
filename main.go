@@ -1,7 +1,7 @@
 package main
 
 import (
-	utils "Tucil1/packages"
+	bruteforce "Tucil1/packages/bruteforce"
 	"fmt"
 	"log"
 	"os"
@@ -64,5 +64,5 @@ func main() {
 	
 	fmt.Printf("Grid Size: %d x %d\n", len(grid), col)
 
-	utils.Bruteforce_solve(grid, row, col)
+	bruteforce.Bruteforce_solve(grid, row, col)
 }

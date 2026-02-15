@@ -1,4 +1,4 @@
-package utils
+package bruteforce
 
 func countRegion(arr [][]byte, row, col int) int{
 	var color [26]byte
