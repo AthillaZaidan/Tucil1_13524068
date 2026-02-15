@@ -9,7 +9,7 @@ import (
 
 func main() {
 	var namaFile string
-	fmt.Print("Masukkan nama file: ")
+	fmt.Print("Insert File Name: ")
 	fmt.Scan(&namaFile)
 
 	data, err := os.ReadFile(namaFile)
@@ -18,7 +18,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("Berhasil membaca file\n%s", namaFile)
+	fmt.Printf("Success reading file: %s", namaFile)
 
 	// cari banyak kolom
 	col := 0
@@ -28,7 +28,7 @@ func main() {
 		}
 		col++
 	}
-	fmt.Printf("Panjang col: %d\n", col)
+	fmt.Printf("Numbers of Columns: %d\n", col)
 
 	row := 0
 	for i := 0; i < len(data); i++ {
@@ -39,7 +39,7 @@ func main() {
 	if len(data) > 0 && data[len(data)-1] != '\n' {
 		row++
 	}
-	fmt.Printf("Panjang Row: %d\n", row)
+	fmt.Printf("Numbers of Rows: %d\n", row)
 
 	grid := make([][]byte, 0, row)
 	currentRow := make([]byte, 0, col)
@@ -62,7 +62,7 @@ func main() {
 		grid = append(grid, currentRow)
 	}
 	
-	fmt.Printf("Ukuran grid: %d x %d\n", len(grid), col)
+	fmt.Printf("Grid Size: %d x %d\n", len(grid), col)
 
 	utils.Bruteforce_solve(grid, row, col)
 }
