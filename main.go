@@ -2,6 +2,7 @@ package main
 
 import (
 	bruteforce "Tucil1/packages/bruteforce"
+	bruteforceoptimized "Tucil1/packages/bruteforce-optimized"
 	"fmt"
 	"log"
 	"os"
@@ -64,5 +65,18 @@ func main() {
 	
 	fmt.Printf("Grid Size: %d x %d\n", len(grid), col)
 
-	bruteforce.Bruteforce_solve(grid, row, col)
+	fmt.Print("===================================\n")
+	fmt.Println("Choose Mode")
+	fmt.Println("1. Pure Bruteforce (MAX 8x8 Grid)")
+	fmt.Println("2. Optimized Bruteforce")
+
+	var pilihan int
+
+	fmt.Scan(&pilihan)
+	
+	if (pilihan == 1){
+		bruteforce.Bruteforce_solve(grid, row, col)
+	} else {
+		bruteforceoptimized.Bruteforce_optimized_solve(grid, row, col)
+	}
 }

@@ -12,7 +12,8 @@ func GenerateCombinations(grid [][]byte, row, col int, numQueens int, maxQueens 
 	if numQueens == maxQueens {
 		iteration++
 		if iteration%1000 == 0 {
-			fmt.Printf("[DEBUG] Iterasi ke-%d | Progress...\n", iteration)
+			fmt.Printf("%dth Iteration\n", iteration)
+			PrintGrid(grid, queensPlacement, row, col)
 		}
 
 		if isValid(grid, queensPlacement, row, col) {
@@ -55,9 +56,8 @@ func Bruteforce_solve(grid [][]byte, row, col int) {
 	fmt.Printf("Grid Size: %d x %d\n", row, col)
 	fmt.Printf("Numbers of Regions: %d\n", maxQueens)
 	fmt.Printf("Numbers of Queens: %d\n", maxQueens)
-	fmt.Println("========================================\n")
+	fmt.Println("========================================")
 
-	// Mulai timer
 	startTime := time.Now()
 
 	found := GenerateCombinations(grid, row, col, 0, maxQueens, queensPlacement, 0)
