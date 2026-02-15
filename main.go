@@ -1,8 +1,7 @@
 package main
 
 import (
-	"Tucil1/packages/utils"
-  "core/main/packages"
+	utils "Tucil1/packages"
 	"fmt"
 	"log"
 	"os"
@@ -64,6 +63,6 @@ func main() {
 	}
 	
 	fmt.Printf("Ukuran grid: %d x %d\n", len(grid), col)
-	
-	gridDup := grid
+
+	utils.Bruteforce_solve(grid, row, col)
 }

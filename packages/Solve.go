@@ -16,7 +16,7 @@ func GenerateCombinations(grid [][]byte, row, col int, numQueens int, maxQueens 
 			fmt.Printf("Iterasi ke-%d: Checking kombinasi %v\n", iteration, queensPlacement)
 			PrintGrid(grid, queensPlacement, row, col)
 		}
-		
+
 		if isValid(grid, queensPlacement, row, col) {
 			fmt.Println("SOLUSI DIDAPATKAN")
 			PrintGrid(grid, queensPlacement, row, col)
@@ -38,6 +38,7 @@ func GenerateCombinations(grid [][]byte, row, col int, numQueens int, maxQueens 
 }
 
 func Bruteforce_solve(grid [][]byte, row, col int) {
+	iteration = 0
 	maxQueens := countRegion(grid, row, col)
 
 	queensPlacement := make([]int, 0, maxQueens)
