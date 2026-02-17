@@ -7,6 +7,6 @@ func PrintMenu() {
 	fmt.Println("Choose Mode")
 	fmt.Println("1. Pure Bruteforce (MAX 8x8 Grid)")
 	fmt.Println("2. Optimized Bruteforce")
-	fmt.Println("3. Exit Program")
+	fmt.Println("3. Back to Input Selection")
 	fmt.Print("===================================\n")
 }

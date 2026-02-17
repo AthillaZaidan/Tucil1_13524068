@@ -10,92 +10,111 @@ var (
 	iteration int
 )
 
-func HasNonQueenRegion(grid [][]byte, row, col int) bool {
-	for i := 0; i < row; i++ {
-		for j := 0; j < col; j++ {
-			if grid[i][j] >= 'A' && grid[i][j] <= 'Z' {
-				return true
-			}
+func isPositionValid(qRow, qCol int, queensPlacement []int, numQueens int, originalGrid [][]byte, col int) bool {
+	for i := 0; i < numQueens; i++ {
+		pos := queensPlacement[i]
+		r := pos / col
+		c := pos % col
+
+		// same row
+		if r == qRow {
+			return false
+		}
+
+		// same column
+		if c == qCol {
+			return false
+		}
+
+		// adjacent (king's move)
+		rowDiff := qRow - r
+		if rowDiff < 0 {
+			rowDiff = -rowDiff
+		}
+		colDiff := qCol - c
+		if colDiff < 0 {
+			colDiff = -colDiff
+		}
+		if rowDiff <= 1 && colDiff <= 1 {
+			return false
+		}
+
+		// same region
+		if originalGrid[r][c] == originalGrid[qRow][qCol] {
+			return false
 		}
 	}
-	return false
+	return true
 }
 
-func restoreGrid(grid [][]byte, backup [][]byte, row, col int) {
+// Cari region yang belum solved dengan jumlah available cell paling sedikit (MRV heuristic)
+// Return 0 kalo ada region unsolved yang ga punya available cell (dead end / pruning)
+func FindSmallestUnsolvedRegion(originalGrid [][]byte, row, col int, queensPlacement []int, numQueens int, solvedRegions [26]bool) byte {
+	var availableCount [26]int
+	var totalCount [26]int
+
+	for i := 0; i < 26; i++ {
+		availableCount[i] = 0
+		totalCount[i] = 0
+	}
+
 	for i := 0; i < row; i++ {
 		for j := 0; j < col; j++ {
-			grid[i][j] = backup[i][j]
-		}
-
-	}
-}
-
-func MarkQueenArea(grid [][]byte, row, col, qRow, qCol int) {
-	for i := 0; i < col; i++ {
-		if grid[qRow][i] != '#' {
-			grid[qRow][i] = '.'
-		}
-	}
-
-	for i := 0; i < row; i++ {
-		if grid[i][qCol] != '#' {
-			grid[i][qCol] = '.'
-		}
-	}
-
-	for i := -1; i <= 1; i++ {
-		for j := -1; j <= 1; j++ {
-			r := qRow + i
-			c := qCol + j
-
-			if r >= 0 && r < row && c >= 0 && c < col {
-				if grid[r][c] != '#' {
-					grid[r][c] = '.'
+			ch := originalGrid[i][j]
+			if ch >= 'A' && ch <= 'Z' && !solvedRegions[ch-'A'] {
+				totalCount[ch-'A']++
+				if isPositionValid(i, j, queensPlacement, numQueens, originalGrid, col) {
+					availableCount[ch-'A']++
 				}
 			}
 		}
-
 	}
 
-	grid[qRow][qCol] = '#'
+	// Dead end check: ada region yang masih butuh queen tapi ga ada cell yang valid
+	for i := 0; i < 26; i++ {
+		if totalCount[i] > 0 && availableCount[i] == 0 {
+			return 0
+		}
+	}
+
+	// Cari region dengan available cell paling sedikit
+	min := row*col + 1
+	var minRegion byte = 0
+	for i := 0; i < 26; i++ {
+		if availableCount[i] > 0 && availableCount[i] < min {
+			min = availableCount[i]
+			minRegion = byte('A' + i)
+		}
+	}
+
+	return minRegion
 }
 
-func FindSmallestRegion(grid [][]byte, row, col int) byte {
-	var color = make([]int, 26)
+func countTotalRegions(grid [][]byte, row, col int) int {
+	var color [26]bool
+	for i := 0; i < 26; i++ {
+		color[i] = false
+	}
 
 	for i := 0; i < row; i++ {
 		for j := 0; j < col; j++ {
-			if grid[i][j] >= 'A' && grid[i][j] <= 'Z' {
-				color[grid[i][j]-'A']++
+			ch := grid[i][j]
+			if ch >= 'A' && ch <= 'Z' {
+				color[ch-'A'] = true
 			}
 		}
 	}
 
-	min := row*col + 1
-	minPos := byte(0)
-
+	regionNum := 0
 	for i := 0; i < 26; i++ {
-		if color[i] < min && color[i] > 0 {
-			minPos = byte('A' + i)
-			min = color[i]
+		if color[i] {
+			regionNum++
 		}
 	}
-
-	return minPos
+	return regionNum
 }
 
-func backupGrid(grid [][]byte, row, col int) [][]byte {
-	backup := make([][]byte, row)
-	for i := 0; i < row; i++ {
-		backup[i] = make([]byte, col)
-		for j := 0; j < col; j++ {
-			backup[i][j] = grid[i][j]
-		}
-	}
-	return backup
-}
-
-func SolveSmallestRegion(grid [][]byte, originalGrid [][]byte, row, col int, queensPlacement []int) ([]int, bool) {
+func SolveSmallestRegion(originalGrid [][]byte, row, col int, queensPlacement []int, numQueens int, solvedRegions [26]bool, totalRegions int) ([]int, bool) {
 
 	iteration++
 	if iteration%5 == 0 {
@@ -103,71 +122,72 @@ func SolveSmallestRegion(grid [][]byte, originalGrid [][]byte, row, col int, que
 		bruteforce.PrintGrid(originalGrid, queensPlacement, row, col)
 	}
 
-	// IZIN KING
-	// cari region terkecil
-	// taro queen disitu
-	// cek is valid
-	// kalo valid gas lagi
-
-	if !HasNonQueenRegion(grid, row, col) {
+	if numQueens == totalRegions {
 		return queensPlacement, true
 	}
 
-	// cari dulu targetRegion
-	targetRegion := FindSmallestRegion(grid, row, col)
+	targetRegion := FindSmallestUnsolvedRegion(originalGrid, row, col, queensPlacement, numQueens, solvedRegions)
 	if targetRegion == 0 {
 		return nil, false
 	}
 
 	for i := 0; i < row; i++ {
 		for j := 0; j < col; j++ {
-			if grid[i][j] != targetRegion {
+			if originalGrid[i][j] != targetRegion {
 				continue
 			}
 
-			backup := backupGrid(grid, row, col)
-
-			// nah ini proses utamanya queen taro"
-			MarkQueenArea(grid, row, col, i, j)
-
-			for r := 0; r < row; r++ {
-				for c := 0; c < col; c++ {
-					if grid[r][c] == targetRegion {
-						grid[r][c] = '.'
-					}
-				}
+			if !isPositionValid(i, j, queensPlacement, numQueens, originalGrid, col) {
+				continue
 			}
 
-			newPlacement := append(queensPlacement, i*col+j)
+			newPlacement := make([]int, numQueens+1)
+			for k := 0; k < numQueens; k++ {
+				newPlacement[k] = queensPlacement[k]
+			}
+			newPlacement[numQueens] = i*col + j
+			solvedRegions[targetRegion-'A'] = true
 
-			if resultPlacement, found := SolveSmallestRegion(grid, originalGrid, row, col, newPlacement); found {
-				return resultPlacement, true
+			// rekursi
+			if result, found := SolveSmallestRegion(originalGrid, row, col, newPlacement, numQueens+1, solvedRegions, totalRegions); found {
+				return result, true
 			}
 
-			restoreGrid(grid, backup, row, col)
+			// backtrack: un-solve region
+			solvedRegions[targetRegion-'A'] = false
 		}
 	}
+
 	return nil, false
 }
 
 func Bruteforce_optimized_solve(grid [][]byte, row, col int) ([]int, bool) {
 	iteration = 0
 	queensPlacement := make([]int, 0)
+
+	// copy grid supaya ga modify yang asli
 	originalGrid := make([][]byte, row)
 	for i := 0; i < row; i++ {
 		originalGrid[i] = make([]byte, col)
 		copy(originalGrid[i], grid[i])
 	}
 
+	totalRegions := countTotalRegions(originalGrid, row, col)
+	var solvedRegions [26]bool
+	for i := 0; i < 26; i++ {
+		solvedRegions[i] = false
+	}
+
 	fmt.Println("\n========================================")
 	fmt.Println("Starting Optimized BruteForce Solver")
 	fmt.Println("========================================")
 	fmt.Printf("Grid Size: %d x %d\n", row, col)
+	fmt.Printf("Numbers of Regions: %d\n", totalRegions)
 	fmt.Println("========================================")
 
 	startTime := time.Now()
 
-	finalPlacement, found := SolveSmallestRegion(grid, originalGrid, row, col, queensPlacement)
+	finalPlacement, found := SolveSmallestRegion(originalGrid, row, col, queensPlacement, 0, solvedRegions, totalRegions)
 
 	duration := time.Since(startTime)
 	milliseconds := duration.Milliseconds()
