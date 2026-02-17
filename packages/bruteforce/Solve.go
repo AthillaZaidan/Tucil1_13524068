@@ -6,12 +6,23 @@ import (
 )
 
 var iteration int
+var OnStep func([]int, int)
+var StopFlag *bool
 
 func GenerateCombinations(grid [][]byte, row, col int, numQueens int, maxQueens int, queensPlacement []int, pos int) ([]int, bool) {
 
+	if StopFlag != nil && *StopFlag {
+		return nil, false
+	}
+
 	if numQueens == maxQueens {
 		iteration++
-		if iteration%1000 == 0 {
+		if OnStep != nil {
+			// throttle: cuma panggil callback tiap 500 iterasi biar ga slow
+			if iteration%500 == 0 {
+				OnStep(queensPlacement, iteration)
+			}
+		} else if iteration%1000 == 0 {
 			fmt.Printf("%dth Iteration\n", iteration)
 			PrintGrid(grid, queensPlacement, row, col)
 		}
