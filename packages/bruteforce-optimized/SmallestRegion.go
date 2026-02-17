@@ -8,6 +8,8 @@ import (
 
 var (
 	iteration int
+	OnStep    func([]int, int)
+	StopFlag  *bool
 )
 
 func isPositionValid(qRow, qCol int, queensPlacement []int, numQueens int, originalGrid [][]byte, col int) bool {
@@ -116,8 +118,15 @@ func countTotalRegions(grid [][]byte, row, col int) int {
 
 func SolveSmallestRegion(originalGrid [][]byte, row, col int, queensPlacement []int, numQueens int, solvedRegions [26]bool, totalRegions int) ([]int, bool) {
 
+	if StopFlag != nil && *StopFlag {
+		return nil, false
+	}
+
 	iteration++
-	if iteration%5 == 0 {
+	if OnStep != nil {
+		// optimized punya sedikit iterasi, callback tiap kali ok
+		OnStep(queensPlacement, iteration)
+	} else if iteration%5 == 0 {
 		fmt.Printf("%dth Iterations\n", iteration)
 		bruteforce.PrintGrid(originalGrid, queensPlacement, row, col)
 	}
