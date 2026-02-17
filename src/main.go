@@ -1,12 +1,12 @@
 package main
 
 import (
-	bruteforce "Tucil1/packages/bruteforce"
-	bruteforceoptimized "Tucil1/packages/bruteforce-optimized"
-	"Tucil1/packages/gui"
-	imageprocessor "Tucil1/packages/imageprocessor"
-	output "Tucil1/packages/output"
-	utils "Tucil1/packages/utils"
+	bruteforce "Tucil1/src/packages/bruteforce"
+	bruteforceoptimized "Tucil1/src/packages/bruteforce-optimized"
+	"Tucil1/src/packages/gui"
+	imageprocessor "Tucil1/src/packages/imageprocessor"
+	output "Tucil1/src/packages/output"
+	utils "Tucil1/src/packages/utils"
 	"fmt"
 	"log"
 	"os"
@@ -58,7 +58,7 @@ func main() {
 			fmt.Print("Insert Image File Name: ")
 			fmt.Scan(&namaFile)
 
-			img, err := imageprocessor.LoadImage(namaFile)
+			img, err := imageprocessor.LoadImage("../data/" + namaFile)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -92,7 +92,7 @@ func main() {
 			fmt.Print("Insert File Name: ")
 			fmt.Scan(&namaFile)
 
-			data, err := os.ReadFile(namaFile)
+			data, err := os.ReadFile("../data/" + namaFile)
 
 			if err != nil {
 				log.Fatal(err)

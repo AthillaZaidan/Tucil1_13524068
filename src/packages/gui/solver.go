@@ -1,8 +1,8 @@
 package gui
 
 import (
-	bruteforce "Tucil1/packages/bruteforce"
-	bruteforceoptimized "Tucil1/packages/bruteforce-optimized"
+	bruteforce "Tucil1/src/packages/bruteforce"
+	bruteforceoptimized "Tucil1/src/packages/bruteforce-optimized"
 	"fmt"
 	"time"
 )

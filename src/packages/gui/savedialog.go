@@ -1,7 +1,7 @@
 package gui
 
 import (
-	output "Tucil1/packages/output"
+	output "Tucil1/src/packages/output"
 	"fmt"
 
 	"fyne.io/fyne/v2/dialog"

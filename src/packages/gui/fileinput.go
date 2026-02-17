@@ -1,7 +1,7 @@
 package gui
 
 import (
-	imageprocessor "Tucil1/packages/imageprocessor"
+	imageprocessor "Tucil1/src/packages/imageprocessor"
 	"fmt"
 	"os"
 
@@ -18,14 +18,15 @@ func (qa *QueensApp) showFileInput(mode int) {
 
 	if mode == 1 {
 		labelText = "Insert Text File Name:"
-		placeholder = "test.txt"
+		placeholder = "Filename"
 	} else {
 		labelText = "Insert Image File Name:"
-		placeholder = "test.png"
+		placeholder = "Filename"
 	}
 
 	entry := widget.NewEntry()
 	entry.SetPlaceHolder(placeholder)
+	entryBox := container.NewGridWrap(fyne.NewSize(400, 36), entry)
 
 	statusLabel := widget.NewLabel("")
 	statusLabel.Wrapping = fyne.TextWrapWord
@@ -60,7 +61,7 @@ func (qa *QueensApp) showFileInput(mode int) {
 		container.NewHBox(backBtn),
 		layout.NewSpacer(),
 		container.NewCenter(widget.NewLabel(labelText)),
-		container.NewCenter(entry),
+		container.NewCenter(entryBox),
 		container.NewCenter(loadBtn),
 		container.NewCenter(statusLabel),
 		layout.NewSpacer(),
@@ -71,7 +72,7 @@ func (qa *QueensApp) showFileInput(mode int) {
 
 // loadTextFile — baca file .txt dan parse jadi grid byte
 func (qa *QueensApp) loadTextFile(filename string) error {
-	data, err := os.ReadFile(filename)
+	data, err := os.ReadFile("../data/" + filename)
 	if err != nil {
 		return err
 	}
@@ -135,7 +136,7 @@ func (qa *QueensApp) loadTextFile(filename string) error {
 
 // loadImageFile — baca file image dan convert ke grid byte via imageprocessor
 func (qa *QueensApp) loadImageFile(filename string) error {
-	img, err := imageprocessor.LoadImage(filename)
+	img, err := imageprocessor.LoadImage("../data/" + filename)
 	if err != nil {
 		return err
 	}
