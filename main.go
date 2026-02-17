@@ -3,6 +3,7 @@ package main
 import (
 	bruteforce "Tucil1/packages/bruteforce"
 	bruteforceoptimized "Tucil1/packages/bruteforce-optimized"
+	"Tucil1/packages/gui"
 	imageprocessor "Tucil1/packages/imageprocessor"
 	output "Tucil1/packages/output"
 	utils "Tucil1/packages/utils"
@@ -12,6 +13,20 @@ import (
 )
 
 func main() {
+	var appMode int
+	fmt.Println("\n===================================")
+	fmt.Println("Queens Puzzle Solver")
+	fmt.Println("===================================")
+	fmt.Println("1. CLI Mode")
+	fmt.Println("2. GUI Mode")
+	fmt.Println("===================================")
+	fmt.Scan(&appMode)
+
+	if appMode == 2 {
+		gui.Run()
+		return
+	}
+
 	var inputMode int
 	inputMode = 0
 
