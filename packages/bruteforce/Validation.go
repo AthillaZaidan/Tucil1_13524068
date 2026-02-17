@@ -12,17 +12,14 @@ func isValid(grid [][]byte, queensPlacement []int, row, col int) bool {
 			row2 := pos2 / col
 			col2 := pos2 % col
 
-			// Check: sama row
 			if row1 == row2 {
 				return false
 			}
 
-			// Check: sama column
 			if col1 == col2 {
 				return false
 			}
 
-			// Check: ADJACENT (sebelahan) - ga boleh dalam jarak 1 cell (8 arah)
 			rowDiff := row1 - row2
 			if rowDiff < 0 {
 				rowDiff = -rowDiff
@@ -35,7 +32,6 @@ func isValid(grid [][]byte, queensPlacement []int, row, col int) bool {
 				return false
 			}
 
-			// Check: sama region
 			if grid[row1][col1] == grid[row2][col2] {
 				return false
 			}

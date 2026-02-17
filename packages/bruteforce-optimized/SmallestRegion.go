@@ -99,7 +99,7 @@ func SolveSmallestRegion(grid [][]byte, originalGrid [][]byte, row, col int, que
 
 	iteration++
 	if iteration%5 == 0 {
-		fmt.Printf("%dth Iterationt\n", iteration)
+		fmt.Printf("%dth Iterations\n", iteration)
 		bruteforce.PrintGrid(originalGrid, queensPlacement, row, col)
 	}
 
@@ -150,7 +150,7 @@ func SolveSmallestRegion(grid [][]byte, originalGrid [][]byte, row, col int, que
 	return nil, false
 }
 
-func Bruteforce_optimized_solve(grid [][]byte, row, col int) {
+func Bruteforce_optimized_solve(grid [][]byte, row, col int) ([]int, bool) {
 	iteration = 0
 	queensPlacement := make([]int, 0)
 	originalGrid := make([][]byte, row)
@@ -177,10 +177,13 @@ func Bruteforce_optimized_solve(grid [][]byte, row, col int) {
 		fmt.Printf("Iterations (Recursive Steps): %d\n", iteration)
 		fmt.Printf("Time: %d ms\n", milliseconds)
 		bruteforce.PrintGrid(originalGrid, finalPlacement, row, col)
+		fmt.Println("========================================")
+		return finalPlacement, true
 	} else {
 		fmt.Printf("No Solution Found :<\n")
 		fmt.Printf("Iterations: %d\n", iteration)
 		fmt.Printf("Time: %d ms\n", milliseconds)
 	}
 	fmt.Println("========================================")
+	return nil, false
 }

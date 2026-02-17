@@ -3,6 +3,8 @@ package main
 import (
 	bruteforce "Tucil1/packages/bruteforce"
 	bruteforceoptimized "Tucil1/packages/bruteforce-optimized"
+	output "Tucil1/packages/output"
+	utils "Tucil1/packages/utils"
 	"fmt"
 	"log"
 	"os"
@@ -62,21 +64,64 @@ func main() {
 	if len(data) > 0 && data[len(data)-1] != '\n' {
 		grid = append(grid, currentRow)
 	}
-	
+
 	fmt.Printf("Grid Size: %d x %d\n", len(grid), col)
 
-	fmt.Print("===================================\n")
-	fmt.Println("Choose Mode")
-	fmt.Println("1. Pure Bruteforce (MAX 8x8 Grid)")
-	fmt.Println("2. Optimized Bruteforce")
+	originalGrid := make([][]byte, row)
+	for i := 0; i < row; i++ {
+		originalGrid[i] = make([]byte, col)
+		copy(originalGrid[i], grid[i])
+	}
 
 	var pilihan int
+	pilihan = 0
 
-	fmt.Scan(&pilihan)
-	
-	if (pilihan == 1){
-		bruteforce.Bruteforce_solve(grid, row, col)
-	} else {
-		bruteforceoptimized.Bruteforce_optimized_solve(grid, row, col)
+	for pilihan != 3 {
+		utils.PrintMenu()
+		fmt.Scan(&pilihan)
+
+		if pilihan == 3 {
+			fmt.Println("Exiting Program...")
+			break
+		}
+
+		if pilihan != 1 && pilihan != 2 {
+			fmt.Println("Invalid choice! Please choose 1, 2, or 3.")
+			continue
+		}
+
+		var solution []int
+		var found bool
+
+		if pilihan == 1 {
+			solution, found = bruteforce.Bruteforce_solve(grid, row, col)
+		} else {
+			solution, found = bruteforceoptimized.Bruteforce_optimized_solve(grid, row, col)
+		}
+
+		if found {
+			var saveAnswer string
+			fmt.Print("\nDo you want to save the solution to file? (y/n): ")
+			fmt.Scan(&saveAnswer)
+
+			if saveAnswer == "y" || saveAnswer == "Y" {
+				var filename string
+				fmt.Print("Enter filename (without extension): ")
+				fmt.Scan(&filename)
+
+				if filename == "" {
+					filename = "solution"
+				}
+
+				err := output.SaveToTxt(filename+".txt", originalGrid, solution, row, col)
+				if err != nil {
+					fmt.Printf("Error saving file: %v\n", err)
+				} else {
+					fmt.Printf("Solution saved to %s.txt\n", filename)
+				}
+			}
+		}
+
+		fmt.Println()
 	}
 }

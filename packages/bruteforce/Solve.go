@@ -7,7 +7,7 @@ import (
 
 var iteration int
 
-func GenerateCombinations(grid [][]byte, row, col int, numQueens int, maxQueens int, queensPlacement []int, pos int) bool {
+func GenerateCombinations(grid [][]byte, row, col int, numQueens int, maxQueens int, queensPlacement []int, pos int) ([]int, bool) {
 
 	if numQueens == maxQueens {
 		iteration++
@@ -23,29 +23,28 @@ func GenerateCombinations(grid [][]byte, row, col int, numQueens int, maxQueens 
 			fmt.Printf("Combination: %v\n", queensPlacement)
 			PrintGrid(grid, queensPlacement, row, col)
 			fmt.Println("========================================")
-			return true
+			return queensPlacement, true
 		}
-		return false
+		return nil, false
 	}
 
 	if pos >= row*col {
-		return false
+		return nil, false
 	}
 
-	queensPlacement = append(queensPlacement, pos)
-	if GenerateCombinations(grid, row, col, numQueens+1, maxQueens, queensPlacement, pos+1) {
-		return true
-	}
-	queensPlacement = queensPlacement[:len(queensPlacement)-1]
-
-	if GenerateCombinations(grid, row, col, numQueens, maxQueens, queensPlacement, pos+1) {
-		return true
+	newPlacement := append(queensPlacement, pos)
+	if solution, found := GenerateCombinations(grid, row, col, numQueens+1, maxQueens, newPlacement, pos+1); found {
+		return solution, true
 	}
 
-	return false
+	if solution, found := GenerateCombinations(grid, row, col, numQueens, maxQueens, queensPlacement, pos+1); found {
+		return solution, true
+	}
+
+	return nil, false
 }
 
-func Bruteforce_solve(grid [][]byte, row, col int) {
+func Bruteforce_solve(grid [][]byte, row, col int) ([]int, bool) {
 	iteration = 0
 	maxQueens := countRegion(grid, row, col)
 	queensPlacement := make([]int, 0, maxQueens)
@@ -60,7 +59,7 @@ func Bruteforce_solve(grid [][]byte, row, col int) {
 
 	startTime := time.Now()
 
-	found := GenerateCombinations(grid, row, col, 0, maxQueens, queensPlacement, 0)
+	solution, found := GenerateCombinations(grid, row, col, 0, maxQueens, queensPlacement, 0)
 
 	duration := time.Since(startTime)
 	milliseconds := duration.Milliseconds()
@@ -69,12 +68,15 @@ func Bruteforce_solve(grid [][]byte, row, col int) {
 		fmt.Printf("Success!, Solution found\n")
 		fmt.Printf("Iterations: %d\n", iteration)
 		fmt.Printf("Time: %d ms\n", milliseconds)
+		fmt.Println("========================================")
+		return solution, true
 	} else {
 		fmt.Printf("No Solution Found :<\n")
 		fmt.Printf("Iterations: %d\n", iteration)
 		fmt.Printf("Time: %d ms\n", milliseconds)
 	}
 	fmt.Println("========================================")
+	return nil, false
 }
 
 func PrintGrid(grid [][]byte, queensPlacement []int, row, col int) {
