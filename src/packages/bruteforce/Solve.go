@@ -18,8 +18,8 @@ func GenerateCombinations(grid [][]byte, row, col int, numQueens int, maxQueens 
 	if numQueens == maxQueens {
 		iteration++
 		if OnStep != nil {
-			// throttle: cuma panggil callback tiap 500 iterasi biar ga slow
-			if iteration%500 == 0 {
+			// throttle: cuma panggil callback tiap 50 iterasi biar ga slow
+			if iteration%50 == 0 {
 				OnStep(queensPlacement, iteration)
 			}
 		} else if iteration%1000 == 0 {
@@ -71,6 +71,15 @@ func Bruteforce_solve(grid [][]byte, row, col int) ([]int, bool) {
 	startTime := time.Now()
 
 	solution, found := GenerateCombinations(grid, row, col, 0, maxQueens, queensPlacement, 0)
+
+	// Final callback untuk update iterasi terakhir di GUI
+	if OnStep != nil {
+		if found {
+			OnStep(solution, iteration)
+		} else {
+			OnStep(queensPlacement, iteration)
+		}
+	}
 
 	duration := time.Since(startTime)
 	milliseconds := duration.Milliseconds()

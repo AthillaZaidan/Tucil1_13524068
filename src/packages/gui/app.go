@@ -59,7 +59,7 @@ func Run() {
 	qa.window.ShowAndRun()
 }
 
-// regionColors — 26 warna buat region A-Z (mirip LinkedIn Queens game)
+// regionColors — 26 warna buat region A-Z 
 var regionColors = [26]color.NRGBA{
 	{0xE8, 0x6B, 0x6B, 0xFF}, // A - Red
 	{0xCD, 0xDC, 0x39, 0xFF}, // B - Lime

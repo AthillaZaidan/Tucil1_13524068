@@ -10,7 +10,7 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-// showMainMenu — tampilkan menu utama (pilih input mode)
+
 func (qa *QueensApp) showMainMenu() {
 	title := canvas.NewText("Queens Puzzle Solver", color.White)
 	title.TextSize = 32

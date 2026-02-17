@@ -198,6 +198,15 @@ func Bruteforce_optimized_solve(grid [][]byte, row, col int) ([]int, bool) {
 
 	finalPlacement, found := SolveSmallestRegion(originalGrid, row, col, queensPlacement, 0, solvedRegions, totalRegions)
 
+	// Final callback untuk update iterasi terakhir di GUI
+	if OnStep != nil {
+		if found {
+			OnStep(finalPlacement, iteration)
+		} else {
+			OnStep(queensPlacement, iteration)
+		}
+	}
+
 	duration := time.Since(startTime)
 	milliseconds := duration.Milliseconds()
 	fmt.Printf("\n========================================\n")

@@ -72,7 +72,7 @@ func (qa *QueensApp) showFileInput(mode int) {
 
 // loadTextFile — baca file .txt dan parse jadi grid byte
 func (qa *QueensApp) loadTextFile(filename string) error {
-	data, err := os.ReadFile("../data/" + filename)
+	data, err := os.ReadFile("../test/" + filename)
 	if err != nil {
 		return err
 	}
@@ -122,6 +122,11 @@ func (qa *QueensApp) loadTextFile(filename string) error {
 	qa.col = col
 	qa.lastSolution = nil
 
+	// validasi grid harus NxN
+	if row != col {
+		return fmt.Errorf("Grid must be square (NxN). Current grid is %dx%d", row, col)
+	}
+
 	// backup original grid
 	qa.originalGrid = make([][]byte, row)
 	for i := 0; i < row; i++ {
@@ -136,7 +141,7 @@ func (qa *QueensApp) loadTextFile(filename string) error {
 
 // loadImageFile — baca file image dan convert ke grid byte via imageprocessor
 func (qa *QueensApp) loadImageFile(filename string) error {
-	img, err := imageprocessor.LoadImage("../data/" + filename)
+	img, err := imageprocessor.LoadImage("../test/" + filename)
 	if err != nil {
 		return err
 	}
@@ -149,6 +154,11 @@ func (qa *QueensApp) loadImageFile(filename string) error {
 	qa.row = rows
 	qa.col = cols
 	qa.lastSolution = nil
+
+	// validasi grid harus NxN
+	if rows != cols {
+		return fmt.Errorf("Grid must be square (NxN). Current grid is %dx%d", rows, cols)
+	}
 
 	// backup original grid
 	qa.originalGrid = make([][]byte, rows)

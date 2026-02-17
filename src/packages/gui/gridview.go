@@ -12,7 +12,6 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-// showGridView — layar utama: tampilkan grid + tombol solver
 func (qa *QueensApp) showGridView() {
 	// hitung cell size biar muat di window
 	maxGridPx := float32(520)

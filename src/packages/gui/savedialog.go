@@ -8,7 +8,7 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-// showSaveDialog — dialog buat save solution ke file .txt
+
 func (qa *QueensApp) showSaveDialog() {
 	entry := widget.NewEntry()
 	entry.SetPlaceHolder("solution")
