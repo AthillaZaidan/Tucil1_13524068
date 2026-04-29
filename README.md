@@ -44,7 +44,7 @@ Tucil1/
 ├── go.mod                          # Go module definition
 ├── go.sum                          # Dependency checksums
 ├── README.md
-├── data/                           # Test input files
+├── test/                           # Test input files
 │   ├── test.txt
 │   ├── 4x4.txt ... 26x26.txt
 │   ├── test1.png
@@ -130,7 +130,7 @@ You will be prompted to choose between CLI Mode and GUI Mode.
    - `1` — Text File (.txt)
    - `2` — Image File (.png/.jpg)
    - `3` — Exit Program
-3. Enter the filename (e.g., `5x5.txt` or `test1.png`). The program automatically reads from the `data/` directory.
+3. Enter the filename (e.g., `5x5.txt` or `test1.png`). The program automatically reads from the `test/` directory.
 4. Choose a solver algorithm:
    - `1` — Pure Bruteforce (recommended for grids up to 8x8)
    - `2` — Optimized Bruteforce (recommended for larger grids)
@@ -238,7 +238,7 @@ D D D # E
 
 ## Test Files
 
-The `data/` directory includes the following test cases:
+The `test/` directory includes the following test cases:
 
 | File | Grid Size | Type |
 |---|---|---|

@@ -58,7 +58,7 @@ func main() {
 			fmt.Print("Insert Image File Name: ")
 			fmt.Scan(&namaFile)
 
-			img, err := imageprocessor.LoadImage("../test/" + namaFile)
+			img, err := imageprocessor.LoadImage("test/" + namaFile)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -92,7 +92,7 @@ func main() {
 			fmt.Print("Insert File Name: ")
 			fmt.Scan(&namaFile)
 
-			data, err := os.ReadFile("../test/" + namaFile)
+			data, err := os.ReadFile("test/" + namaFile)
 
 			if err != nil {
 				log.Fatal(err)

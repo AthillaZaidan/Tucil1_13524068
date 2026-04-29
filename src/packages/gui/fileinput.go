@@ -72,7 +72,7 @@ func (qa *QueensApp) showFileInput(mode int) {
 
 // loadTextFile — baca file .txt dan parse jadi grid byte
 func (qa *QueensApp) loadTextFile(filename string) error {
-	data, err := os.ReadFile("../test/" + filename)
+	data, err := os.ReadFile("test/" + filename)
 	if err != nil {
 		return err
 	}
@@ -141,7 +141,7 @@ func (qa *QueensApp) loadTextFile(filename string) error {
 
 // loadImageFile — baca file image dan convert ke grid byte via imageprocessor
 func (qa *QueensApp) loadImageFile(filename string) error {
-	img, err := imageprocessor.LoadImage("../test/" + filename)
+	img, err := imageprocessor.LoadImage("test/" + filename)
 	if err != nil {
 		return err
 	}
